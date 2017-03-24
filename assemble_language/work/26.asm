@@ -1,0 +1,52 @@
+DATA SEGMENT 
+    TOTAL EQU 01EH
+    GRADE DW 01EH DUP(0)
+    RANK DW 01EH DUP(0)
+DATA ENDS
+
+STACK SEGMENT ;STACK  
+    DW 100H DUP(0)
+STACK ENDS
+
+CODE SEGMENT 
+    ASSUME CS:CODE,DS:DATA,SS:STACK
+START:
+    MOV AX ,DATA
+    MOV DS,AX
+    MOV AX,STACK
+    MOV SS,AX  
+    
+    MOV CX,TOTAL 
+    MOV SI,OFFSET GRADE
+    MOV DI,OFFSET RANK
+LOOP_OUT: 
+    PUSH SI
+    PUSH CX
+    
+    MOV AX,[SI]
+    MOV BX,1
+    MOV CX,TOTAL
+    MOV SI,OFFSET GRADE
+
+    LOOP_IN:
+            CMP AX,[SI]
+            JAE LARGE
+            INC BX
+    LARGE:
+        ADD SI,2 
+        
+    LOOP LOOP_IN
+    
+    MOV [DI],BX 
+    
+    POP SI
+    POP CX
+    INC DI
+    ADD SI,2
+    LOOP LOOP_OUT
+    
+    MOV AH,04CH
+    INT 21H
+    
+CODE ENDS
+END START 

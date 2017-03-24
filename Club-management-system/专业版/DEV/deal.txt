@@ -1,0 +1,346 @@
+void sort_player(club s){
+	
+	int sign[s.get_playerSum()];
+	for(int i=0;i<s.get_playerSum();i++){
+		sign[i]=1;	
+	}
+	string str;
+	char t;
+	int m=0;
+	
+	cout<<"Please input the demand:"<<endl;
+	fflush(stdin);
+	getline(cin,str); 
+	deal_space(str);
+///////////////////////////ÅÐ¶ÏÊÇ·ñÊÇÖ´ÐÐÄ£ºý²éÕÒ 
+	string ms(str,0,6);
+	if(ms=="@name~"){
+		name_sortV(str);
+		return;
+	} 
+//////////////////////////////////////////
+	t=str[m];
+//²âÊÔ ////////////////////////////
+	if(t=='('){
+		int leftB=1,rightB=0,nowB=1;
+		t=str[nowB];
+		while(t!=NULL){
+			if(t=='(')
+				leftB++;
+			else if(t==')')
+				rightB++;
+				
+			cout<<rightB<<" "<<rightB<<endl;
+			nowB++;
+			t=str[nowB];
+			if(leftB==rightB){
+			cout<<"ok"<<endl;
+			fflush(stdin);
+			cout<<str.substr(1,nowB-2)<<endl;
+			exit(-1);	
+			}
+		}
+	}
+/////////////////////////////////////////////
+	while(t!=NULL){
+		if(str[m]=='&'&&str[m+1]=='&')
+		m+=2;
+		
+		t=str[m];
+		int temp[4]={0};
+	    if(t=='!'){
+	    	temp[0]=1;
+	    	m+=2;
+	    	t=str[m];
+	   	if(t=='@')
+	   	  m++;
+	   	  
+	   	  t=str[m];
+		if(t!=')'){
+			if(str[m]=='a'&&str[m+1]=='g'&&str[m+2]=='e'){
+				temp[1]=1;
+				switch(str[m+3]){
+					case 62:{
+						if(str[m+4]!=61){
+							temp[2]=1;	
+							m+=4;
+						}
+						if(str[m+4]==61){
+							temp[2]=4;
+							m+=5;	
+						}
+						break;
+					}
+					case 60:{
+						if(str[m+4]!=61){
+							temp[2]=2;
+							m+=4;	
+						}
+						if(str[m+4]==61){
+							temp[2]=5;
+							m+=5;
+						}
+						
+						break;
+					}
+					case 61:{
+						temp[2]=3;
+						m+=4;
+						break;
+					}
+				}	
+			int num=0;
+			t=str[m];
+			while(t!=')'){
+				
+				num=num*10+(int)t-48;
+				cout<<num<<endl;
+				t=str[++m];
+			}	
+			temp[3]=num;
+			t=str[++m];	
+			} 
+			
+		else if(str[m]=='s'&&str[m+1]=='u'&&str[m+2]=='m'){
+			
+			temp[1]=3;
+			switch(str[m+3]){
+					case 62:{
+						if(str[m+4]!=61){
+							temp[2]=1;	
+							m+=4;
+						}
+						if(str[m+4]==61){
+							temp[2]=4;
+							m+=5;	
+						}
+						break;
+					}
+					case 60:{
+						if(str[m+4]!=61){
+							temp[2]=2;
+							m+=4;	
+						}
+						if(str[m+4]==61){
+							temp[2]=5;
+							m+=5;
+						}
+						
+						break;
+					}
+					case 61:{
+						temp[2]=3;
+						m+=4;
+						break;
+					}
+				}	
+			int num=0;
+			t=str[m];
+			while(t!=')'){
+				
+				num=num*10+(int)t-48;
+				cout<<num<<endl;
+				t=str[++m];
+			}	
+			temp[3]=num;
+			t=str[++m];	
+		}
+		else if(str[m]=='l'&&str[m+1]=='i'&&str[m+2]=='m'){
+			temp[1]=2;
+			switch(str[m+3]){
+					case 62:{
+						if(str[m+4]!=61){
+							temp[2]=1;	
+							m+=4;
+						}
+						if(str[m+4]==61){
+							temp[2]=4;
+							m+=5;	
+						}
+						break;
+					}
+					case 60:{
+						if(str[m+4]!=61){
+							temp[2]=2;
+							m+=4;	
+						}
+						if(str[m+4]==61){
+							temp[2]=5;
+							m+=5;
+						}
+						
+						break;
+					}
+					case 61:{
+						temp[2]=3;
+						m+=4;
+						break;
+					}
+				}	
+			int num=0;
+			t=str[m];
+			while(t!=')'){
+				
+				num=num*10+(int)t-48;
+				cout<<num<<endl;
+				t=str[++m];
+			}	
+			temp[3]=num;
+			t=str[++m];	
+		}		
+		} 
+		}	
+		
+		
+		else{
+			temp[0]=0;
+			if(str[m]=='@')
+			m++;
+			
+			if(str[m]=='a'&&str[m+1]=='g'&&str[m+2]=='e'){
+				temp[1]=1;
+				switch(str[m+3]){
+					case 62:{
+						if(str[m+4]!=61){
+							temp[2]=1;	
+							m+=4;
+						}
+						if(str[m+4]==61){
+							temp[2]=4;
+							m+=5;	
+						}
+						break;
+					}
+					case 60:{
+						if(str[m+4]!=61){
+							temp[2]=2;
+							m+=4;	
+						}
+						if(str[m+4]==61){
+							temp[2]=5;
+							m+=5;
+						}
+						
+						break;
+					}
+					case 61:{
+						temp[2]=3;
+						m+=4;
+						break;
+					}
+				}	
+			int num=0;
+			t=str[m];
+			while(t!=NULL&&t!='&'){
+				
+				num=num*10+(int)t-48;
+				cout<<num<<endl;
+				t=str[++m];
+			}	
+			temp[3]=num;	
+			} 
+			
+			else if(str[m]=='s'&&str[m+1]=='u'&&str[m+2]=='m'){
+				temp[1]=3;
+			switch(str[m+3]){
+					case 62:{
+						if(str[m+4]!=61){
+							temp[2]=1;	
+							m+=4;
+						}
+						if(str[m+4]==61){
+							temp[2]=4;
+							m+=5;	
+						}
+						break;
+					}
+					case 60:{
+						if(str[m+4]!=61){
+							temp[2]=2;
+							m+=4;	
+						}
+						if(str[m+4]==61){
+							temp[2]=5;
+							m+=5;
+						}
+						
+						break;
+					}
+					case 61:{
+						temp[2]=3;
+						m+=4;
+						break;
+					}
+				}	
+			int num=0;
+			t=str[m];
+			while(t!=NULL&&t!='&'){
+				
+				num=num*10+(int)t-48;
+				cout<<num<<endl;
+				t=str[++m];
+			}	
+			temp[3]=num;
+			}
+			
+			else if(str[m]=='l'&&str[m+1]=='i'&&str[m+2]=='m'){
+			temp[1]=2;
+			switch(str[m+3]){
+					case 62:{
+						if(str[m+4]!=61){
+							temp[2]=1;	
+							m+=4;
+						}
+						if(str[m+4]==61){
+							temp[2]=4;
+							m+=5;	
+						}
+						break;
+					}
+					case 60:{
+						if(str[m+4]!=61){
+							temp[2]=2;
+							m+=4;	
+						}
+						if(str[m+4]==61){
+							temp[2]=5;
+							m+=5;
+						}
+						
+						break;
+					}
+					case 61:{
+						temp[2]=3;
+						m+=4;
+						break;
+					}
+				}	
+			int num=0;
+			t=str[m];
+			while(t!=NULL&&t!='&'){
+				
+				num=num*10+(int)t-48;
+				cout<<num<<endl;
+				t=str[++m];
+			}	
+			temp[3]=num;
+		}
+		}
+
+	  change(s,temp,sign);
+	  //cout<<temp[0]<<" "<<temp[1]<<" "<<temp[2]<<" "<<temp[3]<<endl; 
+	}
+	
+	for(int i=0;i<s.get_playerSum();i++){
+		if(sign[i]==1){
+			cout<<"Name:"<<s.get_player(i).get_name()<<"   ";
+			cout<<"Age:"<<s.get_player(i).get_age()<<"   ";
+			cout<<"Ability:"<<s.get_player(i).get_ability()<<endl;
+			cout<<"Transfer Fee:"<<s.get_player(i).get_transfer()<<"   ";
+			cout<<"Goal sum:"<<s.get_player(i).get_sum()<<"   ";
+			cout<<"Limit Age:"<<s.get_player(i).get_limit()<<endl;
+			
+		}
+	}
+	
+}

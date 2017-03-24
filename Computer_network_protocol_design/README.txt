@@ -1,0 +1,1 @@
+本实验代码在Viual Studio下完成，动态数据库文件dll、lib放置在Debug文件下，生成的可执行exe文件也同样放置在Debug文件下，当启动可编译文件时，直接打开selective.sln文件即可。

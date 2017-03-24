@@ -1,0 +1,16 @@
+DATA SEGMENT 
+   ARRAY DW 23,26,2,100,32000,54,0
+   ZERO DW ?
+DATA ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE,DS:DATA
+START:
+    MOV AX,DATA
+    MOV DS,AX
+    LEA BX,ARRAY[12]
+    MOV DX,[BX-2]   ;测试BX中是否已经传入正确的地址
+    MOV AH,4CH       ;代码段结束，执行程序
+    INT 21H
+ENDS
+END START                      

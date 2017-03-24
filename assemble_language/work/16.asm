@@ -1,0 +1,37 @@
+DATA SEGMENT
+     NUMBER DW 3333H
+DATA ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE,DS:DATA
+START:   
+     MOV AX,DATA
+     MOV DS,AX 
+     
+     MOV AX,NUMBER 
+     MOV DX,0
+     MOV CX,8
+     
+LP: 
+    MOV BL,AL
+    AND BL,03H
+    CMP BL,03H
+    JZ COUNT 
+FL: SHR AX,1
+    SHR AX,1 
+    LOOP LP
+    
+    MOV AH,02H
+    ADD DL,"0"
+    INT 21H
+    
+    MOV AH,4CH
+    INT 21H
+        
+COUNT:
+    INC DX
+    JMP FL
+    
+     
+CODE ENDS
+END START

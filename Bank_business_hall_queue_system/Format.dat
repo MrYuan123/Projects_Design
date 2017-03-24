@@ -1,0 +1,6 @@
+[MaxSeqLen]3
+[MinSec]10
+[MaxSec]20
+[MinRestSec]20
+[MaxRestSec]30
+[VIPSERVLen]20
