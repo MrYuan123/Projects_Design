@@ -1,0 +1,193 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY CPU IS
+	PORT(CLR: IN STD_LOGIC;
+		T3, C, Z : IN STD_LOGIC; 
+		SW : IN STD_LOGIC_VECTOR(2 DOWNTO 0); --SW(C,B,A)
+		IR : IN STD_LOGIC_VECTOR(7 DOWNTO 4);
+		W : IN STD_LOGIC_VECTOR(3 DOWNTO 1); 
+
+		LDZ, LDC : OUT STD_LOGIC;
+		CIN : OUT STD_LOGIC;
+		
+		S : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+		SEL : OUT STD_LOGIC_VECTOR(3 DOWNTO 0); 
+		M, ABUS, DRW, PCINC, LPC, LAR, PCADD, ARINC, SELCTL, MEMW, STOP, LIR, SBUS, MBUS, SHORT, LONG : OUT STD_LOGIC
+		);
+END CPU;
+
+ARCHITECTURE ARC OF CPU IS
+	SIGNAL ST0,SST0: STD_LOGIC;
+BEGIN
+	PROCESS(SW, W, CLR, T3,IR)
+	BEGIN
+			SEL <= "0000";
+			MBUS <= '0';
+			DRW <= '0';
+			SBUS <= '0';
+			STOP <= '0';
+			LAR <= '0';
+			ARINC <= '0';
+			LDZ <= '0';
+			LDC <= '0';
+			CIN <= '0';
+			S <= "0000";
+			M <= '0';
+			ABUS <= '0';
+			PCINC <= '0';
+			LPC <= '0';
+			PCADD <= '0';
+			SELCTL <= '0';
+			MEMW <= '0';
+			LIR <= '0';
+			SHORT <= '0';
+			LONG <= '0';
+		IF(CLR = '0') THEN 
+			ST0 <= '0';
+			SST0 <= '0';
+		ELSE
+			IF (T3'EVENT AND T3 = '0') THEN 
+				IF SST0 = '1' THEN
+					ST0 <= SST0 ;
+				END IF;
+			END IF;
+
+			CASE SW IS
+			WHEN "000" =>
+				--quzhi
+				IF(ST0 = '0') THEN
+					SBUS <= W(1);
+					LPC <= W(1);
+					STOP <= W(1);
+					SELCTL <= W(1);
+					SHORT <= W(1);
+					SST0 <= W(1);
+				ELSE
+					LIR <= W(1);
+					PCINC <= W(1);	
+					
+					CASE IR IS
+					WHEN "0001" =>--ADD
+						S <= W(2) & '0' & '0' & W(2);
+						CIN <= W(2);
+						ABUS <= W(2);
+						DRW <= W(2);
+						LDZ <= W(2);
+						LDC <= W(2);
+					WHEN "0010" =>--SUB
+						S <= '0' & W(2) & W(2) & '0';
+						ABUS <= W(2);
+						DRW <= W(2);
+						LDZ <= W(2);
+						LDC <= W(2);										
+					WHEN "0011" =>--AND
+						M <= W(2);
+						S <= W(2) & '0' & W(2) & W(2);
+						ABUS <= W(2);
+						DRW <= W(2);
+						LDZ <= W(2);
+					WHEN "0100" =>--INC
+						S <= "0000";
+						ABUS <= W(2); 
+						DRW <= W(2);
+						LDZ <= W(2);
+						LDC <= W(2);
+					WHEN "0101" =>--LD
+						M <= W(2);
+						S <= W(2) & '0' & W(2) & '0';
+						ABUS <= W(2);
+						LAR <= W(2);
+						LONG <= W(2);
+						DRW <= W(3);
+						MBUS <= W(3);
+					WHEN "0110" =>--ST
+						M <= W(2) OR W(3);
+						S <=  (W(2) OR W(3)) & W(2) & ( W(2) OR W(3) ) & W(2);
+						ABUS <= W(2) OR W(3);
+						LAR <= W(2);
+						LONG <=W(2);
+						MEMW <= W(3);
+					WHEN "0111" =>--JC
+						PCADD <= W(2) AND C;
+					WHEN "1000" =>--JZ
+						PCADD <= W(2) AND Z;
+					WHEN "1001" =>--JMP
+						M <= W(2);
+						S <= W(2) & W(2) & W(2) & W(2);
+						ABUS <= W(2);
+						LPC <= W(2);					
+					WHEN "1110" =>--STP
+						STOP <= W(2);
+						
+					--ADDED IRS
+					WHEN "1010" =>--OUT
+						M <= W(2);
+						S <= W(2) & (NOT W(2)) & W(2) & (NOT W(2));
+						ABUS <= W(2);
+					WHEN "1011" =>--OR
+						M <= W(2);
+						S <= W(2) & W(2) & W(2) & (NOT W(2));
+						ABUS <= W(2);
+						DRW <= W(2);
+						LDZ <= W(2);
+					WHEN "1100" =>--NOT
+						M <= W(2);
+						S <= W(2) & W(2) & W(2) & W(2);
+						ABUS <= W(2);
+						DRW <= W(2);
+						LDZ <= W(2);
+					WHEN OTHERS =>  
+						NULL;
+					END CASE;
+				END IF;	
+					
+			WHEN "001" =>
+				--xiecun	
+				LAR <= W(1) AND NOT ST0;
+				MEMW <= W(1) AND ST0;
+				ARINC <= W(1) AND ST0;
+				SBUS <= W(1);
+				STOP <= W(1);
+				SHORT <= W(1);
+				SELCTL <= W(1);
+				SST0 <= W(1);	
+				
+			WHEN "010" =>
+				--ducun
+				SBUS <= W(1) AND NOT ST0;
+				LAR <= W(1) AND NOT ST0;
+				SST0 <= W(1) AND NOT ST0;
+				MBUS <= W(1) AND ST0;
+				ARINC <= W(1) AND ST0;
+				STOP <= W(1);
+				SHORT <= W(1);
+				SELCTL <= W(1);
+				
+			WHEN "011" =>
+				--duji
+				SEL(3) <= W(2);
+				SEL(2) <= '0';
+				SEL(1) <= W(2);
+				SEL(0) <= W(1) OR W(2);
+				SELCTL <= W(1) OR W(2);
+				STOP <= W(1) OR W(2);
+				
+			WHEN "100" =>
+				--xieji
+				SBUS <= W(1) OR W(2);
+				SELCTL <= W(1) OR W(2);
+				DRW <= W(1) OR W(2);
+				STOP <= W(1) OR W(2);
+				SST0 <= NOT ST0 AND W(2);
+				SEL(3) <= ST0;
+				SEL(2) <= W(2);
+				SEL(1) <= (NOT ST0 AND W(1)) OR (ST0 AND W(2));
+				SEL(0) <= W(1);
+				
+			WHEN OTHERS =>
+				NULL;
+			END CASE;
+		END IF;
+	END PROCESS;
+END ARC;
