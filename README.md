@@ -13,3 +13,7 @@
 - **[assemble language](https://github.com/MrYuan123/Projects_Design/tree/master/assemble_language): 汇编语言程序设计**
 
 - **[hardware design project(TEC-8)](https://github.com/MrYuan123/Projects_Design/tree/master/hardware%20design%20project(TEC-8)) : 计算机CPU设计项目(TEC-8)**
+
+- **[OS_Simulation](https://github.com/MrYuan123/Projects_Design/tree/master/OS_Simulation "OS_Simulation") : 操作系统模拟项目**
+
+
